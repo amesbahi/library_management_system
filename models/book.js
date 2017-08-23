@@ -6,13 +6,10 @@ module.exports = function(sequelize, DataTypes) {
     author: DataTypes.STRING,
     genre: DataTypes.STRING,
     first_published: DataTypes.INTEGER
-  }, {
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-        Book.hasMany(models.Loan, { foreignKey: "book_id" });
-      }
-    }
   });
+  Book.associate = function(models) {
+    // associations can be defined here
+    Book.hasMany(models.Loan, { foreignKey: "book_id" });
+  };
   return Book;
 };
