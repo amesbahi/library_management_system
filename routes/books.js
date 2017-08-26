@@ -7,6 +7,8 @@ const Book = require('../models').Book;
 const Loan = require('../models').Loan;
 const Patron = require('../models').Patron;
 
+let filter;
+
 
 let bookQuery;
 
@@ -25,6 +27,8 @@ router.get('/', (req, res, next) => {
             });
         });
     }
+
+    // SELECT * FROM books LEFT JOIN loans ON books.id = loans.book_id WHERE (loaned_on IS NOT NULL AND returned_on IS NOT NULL) OR (loaned_on IS NULL)
 
     // filter for overdue books
     // SELECT * FROM books, loans WHERE  books.id=loans.book_id AND  loans.returned_on IS NULL AND loans.return_by <= "2017-08-17"
@@ -50,7 +54,7 @@ router.get('/', (req, res, next) => {
     }
 
     // filter for checked out books
-    // SELECT * FROM books, loans WHERE books.id=loans.book_id AND loans.returned_on IS NULL AND loans.return_by >= "2020-10-20"
+    // SELECT * FROM books, loans WHERE books.id=loans.book_id AND loans.returned_on IS NULL
     if (req.query.filter === 'checked_out') {
         bookQuery = Book.findAll({
             include: [{
