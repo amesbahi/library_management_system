@@ -78,11 +78,21 @@ router.get('/new', (req, res, next) => {
     res.render('new_book');
 });
 
-// POST create new book
-router.post('/', (req, res, next) => {
-    Book.create(req.body).then((book) => {
-        res.redirect('all_books' + book.id);
-    });
+// POST a book to the database
+router.post('/new', (req, res, next) => {
+    Book.create(req.body).then((newBook) => {
+        res.redirect('/books' + newBook.id);
+        res.render('all_books', {
+            newBook: newBook
+        });
+    })
 });
+
+// // POST create new book
+// router.post('/', (req, res, next) => {
+//     Book.create(req.body).then((book) => {
+//         res.redirect('all_books' + book.id);
+//     });
+// });
 
 module.exports = router;
