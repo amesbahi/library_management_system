@@ -112,7 +112,8 @@ router.post('/new', (req, res, next) => {
 
 // GET the book detail page
 router.get('/:id', (req, res, next) => {
-    loanQuery = Book.findAll({ order: [["title", "DESC"]] }).then((books) => {
+    bookQuery = Book.findAll({ order: [["title", "DESC"]] }).then((books) => {
+        console.log(books);
         include: [
             {model: Patron},
             {model: Loan}

@@ -31,11 +31,11 @@ block content
                 tbody
                     tr
                         td
-                            a(href=`/books/book_detail`) #{book.title}
+                            a(href=`/books/book_detail`)= book.title
                         td
-                            a(href='patron_detail.html') #{book.Patron.first_name} + ' ' + #{book.Patron.last_name}
-                        td #{book.Loan.loaned_on}
-                        td #{book.Loan.return_by}
-                        td #{book.Loan.returned_on}
+                            a(href='patron_detail.html')= book.Patron.first_name + ' ' + book.Patron.last_name
+                        td= book.Loan.loaned_on
+                        td= book.Loan.return_by
+                        td= book.Loan.returned_on
                         td
                             a.button(href='return_book.html') Return Book
