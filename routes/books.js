@@ -112,13 +112,13 @@ router.post('/new', (req, res, next) => {
 
 // GET the book detail page
 router.get('/:id', (req, res, next) => {
-    loanQuery = Loan.findAll({ order: [["loaned_on", "DESC"]] }).then((loans) => {
+    loanQuery = Book.findAll({ order: [["title", "DESC"]] }).then((books) => {
         include: [
-            {model: Patron,},
-            {model: Book}
+            {model: Patron},
+            {model: Loan}
         ],
         res.render('book_detail', {
-            loans: loans,
+            books: books,
             // title: loans.Book.title,
             // author: loans.Book.author,
             // genre: loans.Book.genre,
