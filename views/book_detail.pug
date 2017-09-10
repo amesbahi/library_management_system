@@ -1,0 +1,41 @@
+extends ./layout
+block content
+    body
+    each loan in loans
+                h1 Book: #{loan.Book.title}
+                form
+                    p
+                        label(for='title') Title
+                        input#title(type='text', value=loan.Book.title)
+                    p
+                        label(for='author') Author
+                        input#author(type='text', value=loan.Book.author)
+                    p
+                        label(for='genre') Genre
+                        input#genre(type='text', value=loan.Book.genre)
+                    p
+                        label(for='first_published') First Published
+                        input#first_published(type='text', value=loan.Book.first_published)
+                    p
+                        input(type='submit', value='Update')
+                h2 Loan History
+                table
+                    thead
+                        tr
+                            th Book
+                            th Patron 
+                            th Loaned on
+                            th Return by 
+                            th Returned on
+                            th Action
+                    tbody
+                        tr
+                            td
+                                a(href='/books/book_detail') #{loan.Book}
+                            td
+                                a(href='patron_detail.html') #{loan.Patron}
+                            td #{loan.loaned_on}
+                            td #{loan.return_by}
+                            td #{loan.returned_on}
+                            td
+                                a.button(href='return_book.html') Return Book
