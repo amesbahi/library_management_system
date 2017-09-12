@@ -112,12 +112,13 @@ router.post('/new', (req, res, next) => {
 
 // GET the book detail page
 router.get('/:id', (req, res, next) => {
-    bookQuery = Book.findAll({ order: [["title", "DESC"]] }).then((books) => {
-        console.log(books);
+    bookQuery = Book.findAll({
         include: [
-            {model: Patron},
-            {model: Loan}
+            { model: Loan }
         ],
+        order: [["title", "DESC"]]
+    }).then((books) => {
+        console.log(books);
         res.render('book_detail', {
             books: books,
             // title: loans.Book.title,
@@ -129,7 +130,7 @@ router.get('/:id', (req, res, next) => {
             // loanedOn: loans.loaned_on,
             // return_by: loans.return_by,
             // returned_on: loans.returned_on
-        
+
         });
     });
 });
