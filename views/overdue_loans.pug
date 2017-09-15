@@ -9,7 +9,7 @@ block content
         |  
         a(href='/loans?filter=overdue') Overdue
         |  
-        a(href='checked_loans.html') Checked Out
+        a(href='/loans?filter=checked_out') Checked Out
     table
         thead
             tr
@@ -23,7 +23,7 @@ block content
             each overdueLoan in overdueLoans
                 tr
                     td
-                        a(href='book_detail.html')= overdueLoan.Book.title
+                        a(href=`/books/${overdueLoan.Book.id}`)= overdueLoan.Book.title
                     td
                         a(href='patron_detail.html')= overdueLoan.Patron.first_name + " " + overdueLoan.Patron.last_name
                     td= overdueLoan.loaned_on

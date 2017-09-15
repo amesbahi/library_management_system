@@ -5,9 +5,9 @@ block content
         a.button(href='new_loan.html') Create New Loan
     p
         | Filters 
-        a(href='all_loans.html') All
+        a(href='/loans') All
         |  
-        a(href='overdue_loans.html') Overdue
+        a(href='/loans?filter=overdue') Overdue
         |  
         a(href='/loans?filter=checked_out') Checked Out
     table
@@ -23,7 +23,7 @@ block content
         each checkedOutLoan in checkedOutLoans
             tr
                 td
-                    a(href='book_detail.html')= checkedOutLoan.Book.title
+                    a(href=`/books/${checkedOutLoan.Book.id}`)= checkedOutLoan.Book.title
                 td
                     a(href='patron_detail.html')= checkedOutLoan.Patron.first_name + " " + checkedOutLoan.Patron.last_name
                 td= checkedOutLoan.loaned_on

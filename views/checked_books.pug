@@ -21,7 +21,7 @@ block content
             each checkedBook in checkedBooks
                 tr
                     td
-                        a(href='book_detail.html')= checkedBook.title
+                        a(href=`/books/${checkedBook.id}`)= checkedBook.title
                     td= checkedBook.author
                     td= checkedBook.genre
                     td= checkedBook.first_published

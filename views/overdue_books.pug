@@ -5,7 +5,7 @@ block content
         a.button(href='new_book.html') Create New Book
     p
         | Filters 
-        a(href='all_books.html') All
+        a(href='/loans') All
         |  
         a(href='overdue_books.html') Overdue
         |  
@@ -21,7 +21,7 @@ block content
             each overdueBook in overdueBooks
                 tr
                     td
-                        a(href='book_detail.html')= overdueBook.title
+                        a(href=`/books/${overdueBook.id}`)= overdueBook.title
                     td= overdueBook.author
                     td= overdueBook.genre
                     td= overdueBook.first_published

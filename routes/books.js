@@ -157,17 +157,15 @@ router.post('/:id/update', (req, res, next) => {
         Book.update(req.body, { where: [{ id: req.params.id }] }).then((newBook) => {
             res.redirect('/books');
         })
+    } else {
+        res.render('book_detail', {
+            errorMessages: errorMessages,
+            title: title,
+            author: author,
+            genre: genre,
+            firstPublished: firstPublished
+        });
     }
 });
-
-// else {
-//     res.render('book_detail', {
-//         errorMessages: errorMessages,
-//         title: title,
-//         author: author,
-//         genre: genre,
-//         firstPublished: firstPublished
-//     });
-// }
 
 module.exports = router;
