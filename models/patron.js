@@ -2,12 +2,12 @@
 module.exports = function(sequelize, DataTypes) {
   var Patron = sequelize.define('Patron', {
     id: { type: DataTypes.INTEGER, primaryKey: true},
-    first_name: DataTypes.STRING,
-    last_name: DataTypes.STRING,
-    address: DataTypes.STRING,
-    email: DataTypes.STRING,
-    library_id: DataTypes.STRING,
-    zip_code: DataTypes.INTEGER
+    first_name: { type: DataTypes.STRING, validate: { notEmpty: {msg: 'Please enter a first name!' } } },
+    last_name: { type: DataTypes.STRING, validate: { notEmpty: {msg: 'Please enter a last name!' } } },
+    address: { type: DataTypes.STRING, validate: { notEmpty: {msg: 'Please enter an address!' } } },
+    email: { type: DataTypes.STRING, validate: { notEmpty: {msg: 'Please enter an email!'} } },
+    library_id: { type: DataTypes.STRING, validate: { notEmpty: {msg: 'Please enter a library id!'} } },
+    zip_code: { type: DataTypes.INTEGER, validate: { notEmpty: {msg: 'Please enter a zip code!' } } }
   });
   Patron.associate = function(models) {
     // associations can be defined here

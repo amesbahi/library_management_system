@@ -43,9 +43,9 @@ block content
                         td= loan.return_by
                         td= loan.returned_on
                         td
-                            a.button(href='return_book.html') Return Book
-        if errorMessages
+                            a.button(href=`/books/${book.id}/return`) Return Book
+        if errors
             h2.error Oooops!
             ul.error
-                each error in errorMessages
-                    li #{error}
+                each error in errors
+                    li #{error.message}

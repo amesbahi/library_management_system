@@ -35,4 +35,74 @@ router.get('/', (req, res, next) => {
     });
 });
 
+// GET patron detail page
+router.get('/:id', (req, res, next) => {
+    const getPatron = Patron.findOne({
+        where: [
+            { id: req.params.id }
+        ]
+    })
+
+    const getLoans = Loan.findAll({
+        where: [
+            { patron_id: req.params.id }
+        ],
+        include: [{
+            model: Patron
+        },
+        {
+            model: Book
+        }],
+    });
+
+    Promise.all([getPatron, getLoans]).then(results => {
+        console.log(results[0]);
+        console.log(results[1]);
+        res.render('patron_detail', {
+            patron: results[0],
+            loans: results[1]
+        });
+    });
+});
+
+// UPDATE a patron detail page
+router.post('/:id/update', (req, res, next) => {
+    const getPatron = Patron.findOne({
+        where: [
+            { id: req.params.id }
+        ]
+    });
+
+    const getLoans = Loan.findAll({
+        where: [
+            { patron_id: req.params.id }
+        ],
+        include: [{
+            model: Patron
+        },
+        {
+            model: Book
+        }],
+    });
+
+    Promise.all([getPatron, getLoans]).then(results => {
+        console.log(req.body);
+        Patron.update(req.body, { where: [{ id: req.params.id }] }).then((newPatron) => {
+            res.redirect('/patrons');
+        }).catch(err => {
+            if (err.name) {
+                console.log(err.errors);
+                res.render('patron_detail', {
+                    patron: results[0],
+                    loans: results[1],
+                    errors: err.errors
+                });
+            } else {
+                console.log('Error: ' + err);
+                res.status(500).send(err);
+            }
+        })
+    });
+});
+
 module.exports = router;

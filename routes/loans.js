@@ -18,7 +18,48 @@ router.get('/new', (req, res, next) => {
     console.log("this is the new loan page");
     console.log(req.query);
     console.log(typeof req.query);
-    res.render('new_loan');
+    const bookQuery = Book.findAll({ order: [["first_published", "DESC"]] });
+    const patronQuery = Patron.findAll({ order: [["last_name"]] });
+    const today = moment().format("YYYY-MM-D");
+    const sevenDaysFromNow = moment().add(7, 'days').format("YYYY-MM-D");
+    Promise.all([bookQuery, patronQuery]).then(results => {
+        console.log(results[0]);
+        res.render('new_loan', {
+            books: results[0],
+            patrons: results[1],
+            today: today,
+            sevenDaysFromNow: sevenDaysFromNow
+        });
+    });
+});
+
+// POST a new loan
+router.post('/new', (req, res, next) => {
+    console.log(req.body);
+    Loan.create(req.body).then((newLoan) => {
+        res.redirect('/loans');
+    }).catch(err => {
+        const bookQuery = Book.findAll({ order: [["first_published", "DESC"]] });
+        const patronQuery = Patron.findAll({ order: [["last_name"]] });
+        const today = moment().format("YYYY-MM-D");
+        const sevenDaysFromNow = moment().add(7, 'days').format("YYYY-MM-D");
+        Promise.all([bookQuery, patronQuery]).then(results => {
+            console.log(results[0]);
+            if (err.name) {
+                console.log(err.errors);
+                res.render('new_loan', {
+                    books: results[0],
+                    patrons: results[1],
+                    today: today,
+                    sevenDaysFromNow: sevenDaysFromNow,
+                    errors: err.errors
+                });
+            } else {
+                console.log('Error: ' + err);
+                res.status(500).send(err);
+            }
+        });
+    });
 });
 
 // GET all loans
