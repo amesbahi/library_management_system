@@ -2,7 +2,7 @@ extends ./layout
 block content
     h1 #{title}
     p
-        a.button(href='new_loan.html') Create New Loan
+        a.button(href='loans/new') Create New Loan
     p
         | Filters 
         a(href='/loans') All
@@ -30,4 +30,4 @@ block content
                 td= checkedOutLoan.return_by
                 td= checkedOutLoan.returned_on
                 td
-                    a.button(href='return_book.html') Return Book
+                    a.button(href=`/books/${checkedOutLoan.Book.id}/return`) Return Book

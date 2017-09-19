@@ -11,7 +11,6 @@ let filter;
 
 // GET all books
 router.get('/', (req, res, next) => {
-    // grab all the books
     if (req.query.filter === undefined) {
         Book.findAll({ order: [["first_published", "DESC"]] }).then((books) => {
             res.render('all_books', {
@@ -21,10 +20,6 @@ router.get('/', (req, res, next) => {
         });
     }
 
-    // SELECT * FROM books LEFT JOIN loans ON books.id = loans.book_id WHERE (loaned_on IS NOT NULL AND returned_on IS NOT NULL) OR (loaned_on IS NULL)
-
-    // filter for overdue books
-    // SELECT * FROM books, loans WHERE  books.id=loans.book_id AND  loans.returned_on IS NULL AND loans.return_by <= "2017-08-17"
     if (req.query.filter === 'overdue') {
         Book.findAll({
             include: [{
@@ -46,7 +41,6 @@ router.get('/', (req, res, next) => {
     }
 
     // filter for checked out books
-    // SELECT * FROM books, loans WHERE books.id=loans.book_id AND loans.returned_on IS NULL
     if (req.query.filter === 'checked_out') {
         Book.findAll({
             include: [{
@@ -81,7 +75,6 @@ router.post('/new', (req, res, next) => {
         res.redirect('/books');
     }).catch(err => {
         if (err.name === 'SequelizeValidationError') {
-            console.log(err.errors);
             res.render('new_book', {
                 title: title,
                 author: author,
@@ -90,7 +83,6 @@ router.post('/new', (req, res, next) => {
                 errors: err.errors
             });
         } else {
-            console.log('Error: ' + err);
             res.status(500).send(err);
         }
     })
@@ -139,20 +131,16 @@ router.post('/:id/update', (req, res, next) => {
     });
 
     Promise.all([getBook, getLoans]).then(results => {
-        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
-        console.log(req.body);
         Book.update(req.body, { where: [{ id: req.params.id }] }).then((newBook) => {
             res.redirect('/books');
         }).catch(err => {
             if (err.name === 'SequelizeValidationError') {
-                console.log(err.errors);
                 res.render('book_detail', {
                     book: results[0],
                     loans: results[1],
                     errors: err.errors
                 });
             } else {
-                console.log('Error: ' + err);
                 res.status(500).send(err);
             }
         })
@@ -161,8 +149,6 @@ router.post('/:id/update', (req, res, next) => {
 
 // GET return book page
 router.get('/:id/return', (req, res, next) => {
-    console.log('hi get');
-    console.log('@@@@@@@@@@@');
     const today = moment().format("YYYY-MM-D");
     const loanQuery = Loan.findOne({
         where: [{ book_id: req.params.id }],
@@ -171,7 +157,6 @@ router.get('/:id/return', (req, res, next) => {
             { model: Book }
         ]
     }).then((loan) => {
-        console.log(loan);
         res.render('return_book', {
             loan: loan,
             today: today
@@ -181,8 +166,6 @@ router.get('/:id/return', (req, res, next) => {
 
 // POST return book page
 router.post('/:id/return', (req, res, next) => {
-    console.log('hi post');
-    console.log(req.body);
     const errors = [];
     if (!req.body.returned_on) {
         errors.push('Please add a returned on date!');
@@ -207,19 +190,6 @@ router.post('/:id/return', (req, res, next) => {
         Loan.update(req.body, { where: [{ book_id: req.params.id }] }).then(() => {
             res.redirect('/loans');
         })
-        // .catch(err => {
-        //     if (err.name) {
-        //         console.log(err.errors);
-        //         res.render('return_book', {
-        //             book: results[0],
-        //             loans: results[1],
-        //             errors: err.errors
-        //         });
-        //     } else {
-        //         console.log('Error: ' + err);
-        //         res.status(500).send(err);
-        //     }
-        // })
     }
 });
 

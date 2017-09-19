@@ -26,8 +26,10 @@ block content
                     td
                         a(href=`/books/${loan.Book.id}`)= loan.Book.title
                     td
-                        a(href='patron_detail.html')= loan.Patron.first_name + " " + loan.Patron.last_name
+                        a(href=`/patrons/${loan.patron_id}`)= loan.Patron.first_name + " " + loan.Patron.last_name
                     td= loan.loaned_on
                     td= loan.return_by
                     td= loan.returned_on
-                    td
+                    if loan.returned_on === null
+                        td
+                            a.button(href=`/books/${loan.book_id}/return`) Return Book

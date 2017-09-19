@@ -1,5 +1,3 @@
-// tidy this file up
-
 'use strict';
 
 const express = require('express');
@@ -15,16 +13,11 @@ let bookQuery;
 
 // GET new patron page
 router.get('/new', (req, res, next) => {
-    console.log("this is the new patron page");
-    console.log(req.query);
-    console.log(typeof req.query);
     res.render('new_patron');
 });
 
 // GET all patrons
 router.get('/', (req, res, next) => {
-    console.log('these are all the patrons');
-
     Patron.findAll({
         order: [["last_name"]]
     }).then((patrons) => {
@@ -56,8 +49,6 @@ router.get('/:id', (req, res, next) => {
     });
 
     Promise.all([getPatron, getLoans]).then(results => {
-        console.log(results[0]);
-        console.log(results[1]);
         res.render('patron_detail', {
             patron: results[0],
             loans: results[1]
@@ -86,20 +77,16 @@ router.post('/:id/update', (req, res, next) => {
     });
 
     Promise.all([getPatron, getLoans]).then(results => {
-        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
-        console.log(req.body);
         Patron.update(req.body, { where: [{ id: req.params.id }] }).then((newPatron) => {
             res.redirect('/patrons');
         }).catch(err => {
             if (err.name) {
-                console.log(err.errors);
                 res.render('patron_detail', {
                     patron: results[0],
                     loans: results[1],
                     errors: err.errors
                 });
             } else {
-                console.log('Error: ' + err);
                 res.status(500).send(err);
             }
         })
@@ -119,7 +106,6 @@ router.post('/new', (req, res, next) => {
         res.redirect('/patrons');
     }).catch(err => {
         if (err.name) {
-            console.log(err.errors);
             res.render('new_patron', {
                 firstName: firstName,
                 lastName: lastName,
@@ -130,7 +116,6 @@ router.post('/new', (req, res, next) => {
                 errors: err.errors
             });
         } else {
-            console.log('Error: ' + err);
             res.status(500).send(err);
         }
     })
