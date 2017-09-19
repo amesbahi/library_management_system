@@ -106,4 +106,34 @@ router.post('/:id/update', (req, res, next) => {
     });
 });
 
+// POST a patron to the database
+router.post('/new', (req, res, next) => {
+    const firstName = req.body.first_name;
+    const lastName = req.body.last_name;
+    const address = req.body.address;
+    const email = req.body.email;
+    const libraryId = req.body.library_id;
+    const zipCode = req.body.zip_code;
+
+    Patron.create(req.body).then((newPatron) => {
+        res.redirect('/patrons');
+    }).catch(err => {
+        if (err.name) {
+            console.log(err.errors);
+            res.render('new_patron', {
+                firstName: firstName,
+                lastName: lastName,
+                address: address,
+                email: email,
+                libraryId: libraryId,
+                zipCode: zipCode,
+                errors: err.errors
+            });
+        } else {
+            console.log('Error: ' + err);
+            res.status(500).send(err);
+        }
+    })
+});
+
 module.exports = router;

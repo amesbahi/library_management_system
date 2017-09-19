@@ -23,8 +23,8 @@ block content
                 p
                     input(type='submit', value='Update')
     if loans
+                h2 Loan History
                 each loan in loans
-                    h2 Loan History
                     table
                         thead
                             tr
@@ -45,8 +45,8 @@ block content
                                 td
                                 td
                                     a.button(href=`/books/${loan.book_id}/return`) Return Book
-                    if errors
-                        h2.error Oooops!
-                        ul.error
-                            each error in errors
-                                li #{error.message}
+    if errors
+        h2.error Oooops!
+        ul.error
+            each error in errors
+                li #{error.message}
