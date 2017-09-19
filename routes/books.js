@@ -139,6 +139,7 @@ router.post('/:id/update', (req, res, next) => {
     });
 
     Promise.all([getBook, getLoans]).then(results => {
+        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
         console.log(req.body);
         Book.update(req.body, { where: [{ id: req.params.id }] }).then((newBook) => {
             res.redirect('/books');

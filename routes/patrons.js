@@ -82,10 +82,11 @@ router.post('/:id/update', (req, res, next) => {
         },
         {
             model: Book
-        }],
+        }]
     });
 
     Promise.all([getPatron, getLoans]).then(results => {
+        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
         console.log(req.body);
         Patron.update(req.body, { where: [{ id: req.params.id }] }).then((newPatron) => {
             res.redirect('/patrons');
